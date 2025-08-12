@@ -19,16 +19,13 @@ public class SmoothCamera : MonoBehaviour
     Camera cam;
 
     
-    int referenceHeight = 180;
-    //How much we need to increase the size of quad for it to take entire camera
-    float screenCompinsator = 1.4f;
-    float canvasHight = 180f;
-    float canvasWidth = 320f;
+    //How much we need to increase the size of quad for it to fill entire screen space
+    float screenCompensator = 1.4f;
 
     private void Start()
     {
         cam = GetComponent<Camera>();
-        pixelSize = (2f * cam.orthographicSize * screenCompinsator) / Screen.height;
+        pixelSize = (2f * cam.orthographicSize * screenCompensator) / Screen.height;
 
 
 
@@ -46,21 +43,21 @@ public class SmoothCamera : MonoBehaviour
             {
                 if ((float)width / height > 2.333)
                 {
-                    screen.transform.localScale = new Vector3(21f, 9f, 1f) * screenCompinsator;
+                    screen.transform.localScale = new Vector3(21f, 9f, 1f) * screenCompensator;
                 }
                 else
                 {
-                    screen.transform.localScale = new Vector3(16f, 9f, 1f) * screenCompinsator;
+                    screen.transform.localScale = new Vector3(16f, 9f, 1f) * screenCompensator;
                 }
             }
             else
             {
-                screen.transform.localScale = new Vector3(4f, 3f, 1f) * screenCompinsator;
+                screen.transform.localScale = new Vector3(4f, 3f, 1f) * screenCompensator;
             }
         }
         else
         {
-            screen.transform.localScale = new Vector3(1f, 1f, 1f) * screenCompinsator;
+            screen.transform.localScale = new Vector3(1f, 1f, 1f) * screenCompensator;
         }
         //pixelSize = screen.transform.localScale.x / canvasWidth;
 
@@ -75,13 +72,13 @@ public class SmoothCamera : MonoBehaviour
             //buffer remembers how much we moved cam
             transform.position += new Vector3(0, 0, Mathf.Round(vertPixelBuffer / pixelSize) * pixelSize);
             vertPixelBuffer -= Mathf.Round(vertPixelBuffer / pixelSize) * pixelSize;
-            screen.transform.position = screenPoint + new Vector3(0, vertPixelBuffer * screenCompinsator, 0);
+            screen.transform.position = screenPoint + new Vector3(0, vertPixelBuffer * screenCompensator, 0);
         }
         if (Mathf.Abs(horPixelBuffer) > pixelSize)
         {
             transform.position += new Vector3(Mathf.Round(horPixelBuffer / pixelSize) * pixelSize, 0, 0);
             horPixelBuffer -= Mathf.Round(horPixelBuffer / pixelSize) * pixelSize;
-            screen.transform.position = screenPoint + new Vector3(horPixelBuffer * screenCompinsator, 0, 0);
+            screen.transform.position = screenPoint + new Vector3(horPixelBuffer * screenCompensator, 0, 0);
         }
     }
 
@@ -95,23 +92,23 @@ public class SmoothCamera : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             vertPixelBuffer += speed * Time.deltaTime;
-            screen.transform.position += new Vector3(0, speed * Time.deltaTime * screenCompinsator, 0);
+            screen.transform.position += new Vector3(0, speed * Time.deltaTime * screenCompensator, 0);
         }
         else if (Input.GetKey(KeyCode.S))
         {
             vertPixelBuffer -= speed * Time.deltaTime;
-            screen.transform.position += new Vector3(0, -speed * Time.deltaTime * screenCompinsator, 0);
+            screen.transform.position += new Vector3(0, -speed * Time.deltaTime * screenCompensator, 0);
         }
         if (Input.GetKey(KeyCode.A))
         {
             horPixelBuffer -= speed * Time.deltaTime;
-            screen.transform.position += new Vector3(speed * Time.deltaTime * screenCompinsator, 0, 0);
+            screen.transform.position += new Vector3(speed * Time.deltaTime * screenCompensator, 0, 0);
 
         }
         else if (Input.GetKey(KeyCode.D))
         {
             horPixelBuffer += speed * Time.deltaTime;
-            screen.transform.position += new Vector3(-speed * Time.deltaTime * screenCompinsator, 0, 0);
+            screen.transform.position += new Vector3(-speed * Time.deltaTime * screenCompensator, 0, 0);
         }
 
     }
