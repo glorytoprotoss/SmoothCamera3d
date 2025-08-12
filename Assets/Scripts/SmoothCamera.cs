@@ -4,7 +4,7 @@ using System.Collections;
 public class SmoothCamera : MonoBehaviour
 {
     [SerializeField] GameObject screen;
-    
+
 
     [SerializeField] float speed;
 
@@ -18,7 +18,8 @@ public class SmoothCamera : MonoBehaviour
     private RenderTexture _renderTexture;
     Camera cam;
 
-    public int referenceHeight = 180;
+    
+    int referenceHeight = 180;
     //How much we need to increase the size of quad for it to take entire camera
     float screenCompinsator = 1.4f;
     float canvasHight = 180f;
@@ -28,7 +29,7 @@ public class SmoothCamera : MonoBehaviour
     {
         cam = GetComponent<Camera>();
         pixelSize = (2f * cam.orthographicSize * screenCompinsator) / Screen.height;
-        
+
 
 
         screenPoint = screen.transform.position;
@@ -62,17 +63,17 @@ public class SmoothCamera : MonoBehaviour
             screen.transform.localScale = new Vector3(1f, 1f, 1f) * screenCompinsator;
         }
         //pixelSize = screen.transform.localScale.x / canvasWidth;
-        
+
     }
 
     void Update()
     {
         GetBaseInput();
-        
+
         if (Mathf.Abs(vertPixelBuffer) > pixelSize)
         {
-            
-            transform.position += new Vector3(0, 0, Mathf.Round(vertPixelBuffer/pixelSize) * pixelSize);
+            //buffer remembers how much we moved cam
+            transform.position += new Vector3(0, 0, Mathf.Round(vertPixelBuffer / pixelSize) * pixelSize);
             vertPixelBuffer -= Mathf.Round(vertPixelBuffer / pixelSize) * pixelSize;
             screen.transform.position = screenPoint + new Vector3(0, vertPixelBuffer * screenCompinsator, 0);
         }
@@ -84,13 +85,13 @@ public class SmoothCamera : MonoBehaviour
         }
     }
 
-    
 
-    
+
+
 
     private void GetBaseInput()
-    { 
-        
+    {
+
         if (Input.GetKey(KeyCode.W))
         {
             vertPixelBuffer += speed * Time.deltaTime;
@@ -105,13 +106,13 @@ public class SmoothCamera : MonoBehaviour
         {
             horPixelBuffer -= speed * Time.deltaTime;
             screen.transform.position += new Vector3(speed * Time.deltaTime * screenCompinsator, 0, 0);
-           
+
         }
         else if (Input.GetKey(KeyCode.D))
         {
             horPixelBuffer += speed * Time.deltaTime;
             screen.transform.position += new Vector3(-speed * Time.deltaTime * screenCompinsator, 0, 0);
         }
-        
+
     }
 }
