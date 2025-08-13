@@ -12,9 +12,11 @@ public class SmoothCamera1 : MonoBehaviour
     [SerializeField] private Camera renderTexCamera;
     [SerializeField] private Camera realWorldCamera;
 
-    [SerializeField] private GameObject renderTexPlane;
-    [SerializeField] private RenderTexture renderTexture;
+    [SerializeField] private GameObject renderTexPlane; 
+    [SerializeField] private GameObject blackLinesPlane;
 
+    [SerializeField] private RenderTexture renderTexture;
+   
     private Vector2Int resolution;
 
     private float realWorldCameraStep;
@@ -27,6 +29,7 @@ public class SmoothCamera1 : MonoBehaviour
         resolution = new Vector2Int(width, height); Debug.Log(resolution.ToString());
 
         renderTexPlane.transform.localScale = new Vector3(resolution.x / 100f, resolution.y / 100f, 1f);
+        blackLinesPlane.transform.localScale = new Vector3(Screen.currentResolution.width / 100f, Screen.currentResolution.height / 100f, 1f);
 
         renderTexCamera.orthographicSize = renderTexPlane.transform.localScale.y / 2;
 
@@ -40,28 +43,14 @@ public class SmoothCamera1 : MonoBehaviour
     {
         MoveInput();
 
-        if (renderTexCamera.gameObject.transform.localPosition.x >= 0.01f)
+        if (Mathf.Abs(renderTexCamera.gameObject.transform.localPosition.x) >= 0.01f)
         {
             realWorldCamera.gameObject.transform.localPosition += new Vector3(realWorldCameraStep * Mathf.Round(renderTexCamera.gameObject.transform.localPosition.x / 0.01f), 0, 0);
 
             renderTexCamera.gameObject.transform.localPosition = new Vector3(0, renderTexCamera.gameObject.transform.localPosition.y, 0);
         }
 
-        if (renderTexCamera.gameObject.transform.localPosition.x <= -0.01f)
-        {
-            realWorldCamera.gameObject.transform.localPosition += new Vector3(realWorldCameraStep * Mathf.Round(renderTexCamera.gameObject.transform.localPosition.x / 0.01f), 0, 0);
-
-            renderTexCamera.gameObject.transform.localPosition = new Vector3(0, renderTexCamera.gameObject.transform.localPosition.y, 0);
-        }
-
-        if (renderTexCamera.gameObject.transform.localPosition.y >= 0.01f)
-        {
-            realWorldCamera.gameObject.transform.localPosition += new Vector3(0, realWorldCameraStep * Mathf.Round(renderTexCamera.gameObject.transform.localPosition.y / 0.01f), 0);
-
-            renderTexCamera.gameObject.transform.localPosition = new Vector3(renderTexCamera.gameObject.transform.localPosition.x, 0, 0);
-        }
-
-        if (renderTexCamera.gameObject.transform.localPosition.y <= -0.01f)
+        if (Mathf.Abs(renderTexCamera.gameObject.transform.localPosition.y) >= 0.01f)
         {
             realWorldCamera.gameObject.transform.localPosition += new Vector3(0, realWorldCameraStep * Mathf.Round(renderTexCamera.gameObject.transform.localPosition.y / 0.01f), 0);
 
